@@ -1,0 +1,6 @@
+make_one_btl_value_no_txt3.m
+replaced strmatch with equivalent
+plot_one_salt_run_raw_data.m
+replaced strmatch with equivalent
+process_autosal.m
+removed close all

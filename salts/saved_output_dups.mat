@@ -1,0 +1,81 @@
+# Created by Octave 4.0.3, Sun Sep 25 13:46:24 2016 EDT <pedro@aspergarria>
+# name: saved_output_dups
+# type: int32 matrix
+# ndims: 2
+ 8 8
+ 14
+ 14
+ 14
+ 14
+ 15
+ 15
+ 15
+ 15
+ 7
+ 7
+ 22
+ 22
+ 7
+ 7
+ 16
+ 16
+ 7
+ 8
+ 23
+ 24
+ 33
+ 34
+ 43
+ 44
+ 2
+ 2
+ 2
+ 2
+ 2
+ 2
+ 2
+ 2
+ 35
+ 35
+ 37
+ 37
+ 35
+ 35
+ 35
+ 35
+ 2
+ 2
+ 2
+ 2
+ 2
+ 2
+ 2
+ 2
+ 1
+ 1
+ 1
+ 1
+ 1
+ 1
+ 1
+ 1
+ 2
+ 2
+ 2
+ 2
+ 2
+ 2
+ 2
+ 2
+
+
+# name: index_dups
+# type: matrix
+# rows: 4
+# columns: 2
+ 7 8
+ 23 24
+ 33 34
+ 43 44
+
+

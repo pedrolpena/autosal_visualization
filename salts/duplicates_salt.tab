@@ -1,0 +1,12 @@
+\begin{longtable}{ccccc}
+\caption{Duplicate salinity samples collected during the ABACO cruise.}\\
+\hline
+Station &	Niskin &	Salinity1 &	Salinity2 &	Differences \	
+\hline
+14	& 7	&  35.000	&  35.000	&   0.000\\
+14	&22	&  37.000	&  37.000	&   0.000\\
+15	& 7	&  35.000	&  35.000	&   0.000\\
+15	&16	&  35.000	&  35.000	&   0.000\\
+\hline
+\label{table:salt_dup}
+\end{longtable}
