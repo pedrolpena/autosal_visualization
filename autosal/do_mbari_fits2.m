@@ -587,7 +587,7 @@ function [m,b,r,sm,sb]=lsqfitgm(X,Y)
 
 m = sqrt(my * mx);
 
-if (my < 0) & (mx < 0)
+if (my < 0) && (mx < 0)
 	m = -m;
 end
 
@@ -621,7 +621,7 @@ den = n * Sx2 - Sx^2;
 
 r = sqrt(my / mx);
 
-if (my < 0) & (mx < 0)
+if (my < 0) && (mx < 0)
 	r = -r;
 end
 
@@ -723,7 +723,7 @@ den = n * Sx2 - Sx^2;
 
 r = sqrt(my / mx);
 
-if (my < 0) & (mx < 0)
+if (my < 0) && (mx < 0)
 	r = -r;
 end
 

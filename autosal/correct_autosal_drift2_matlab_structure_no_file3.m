@@ -58,7 +58,7 @@ function theResult  = correct_autosal_drift2_matlab_structure_no_file3 (nominal_
 
 % outfile = 'test.lis'
 
-warning off MATLAB:divideByZero
+%warning off MATLAB:divideByZero
 error_for_standards = 0.00003;
 error_for_drift     = 0.00006;
 

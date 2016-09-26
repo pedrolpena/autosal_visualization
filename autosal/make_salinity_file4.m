@@ -74,13 +74,13 @@ if ~isempty(salts(1).txt_salinity_correction)
     clear output_salinity_correction
     output_salinity_correction = salts(1).txt_qc;
     for II = 2: length(salts);
-        output_salinity_correction = [output_salinity_correction' salts(II).txt_salinity_correction']';
-    end;
-    output = [output_sta output_niskin output_bottle ...
-        output_twiceratio output_salinity output_quality output_cast output_salinity_correction];
+        output_salinity_correction = [output_salinity_correction',salts(II).txt_salinity_correction']';
+    end
+    output=double([0.0]);
+    output = double([output_sta,output_niskin,output_bottle,output_twiceratio,output_salinity,output_quality,output_cast,output_salinity_correction]);
 else
-    output = [output_sta output_niskin output_bottle ...
-        output_twiceratio output_salinity output_quality output_cast];
+    output=double([0.0]);
+    output = double([output_sta,output_niskin output_bottle,output_twiceratio,output_salinity,output_quality,output_cast]);
 end
 
 II = find(output_sta == 1000);

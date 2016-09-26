@@ -136,10 +136,8 @@ end;
     %Index_good_dups = find(abs(diff_dup_S) <= median(diff_dup_S(Index_good_dups)) + 2*std(diff_dup_S(Index_good_dups)));
     %Index_good_dups = find(abs(diff_dup_S) <= median(diff_dup_S(Index_good_dups)) + 2*std(diff_dup_S(Index_good_dups)));
     
-    Index_good = find(diff_dup_S <= nanmedian(diff_dup_S) + 2*nanstd(diff_dup_S) ...
-                & diff_dup_S >= nanmedian(diff_dup_S) - 2*nanstd(diff_dup_S));
-    Index_good_dups = find(diff_dup_S <= nanmedian(diff_dup_S(Index_good)) + 2*nanstd(diff_dup_S(Index_good)) ...
-                & diff_dup_S >= nanmedian(diff_dup_S(Index_good)) - 2*nanstd(diff_dup_S(Index_good)));
+    Index_good = find(diff_dup_S <= nanmedian(diff_dup_S) + 2*nanstd(diff_dup_S) & diff_dup_S >= nanmedian(diff_dup_S) - 2*nanstd(diff_dup_S));
+    Index_good_dups = find(diff_dup_S <= nanmedian(diff_dup_S(Index_good)) + 2*nanstd(diff_dup_S(Index_good)) & diff_dup_S >= nanmedian(diff_dup_S(Index_good)) - 2*nanstd(diff_dup_S(Index_good)));
 
     figure;
         number_dups = [1:length(diff_dup_S)];
