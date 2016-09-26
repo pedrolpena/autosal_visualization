@@ -333,7 +333,8 @@ clear dup_s submit_salts
 
 min_date = min(calibration_data(1).txt_date);
 max_date = max(calibration_data(end).txt_date);
-figure;
+%figure;
+makefigexact4(8.5,11);
 for II = 1: length(calibration_data)
     I_start = find(calibration_data(II).txt_samp_nbr==1000 & calibration_data(II).txt_qc==2);
     plot (calibration_data(II).txt_date(I_start), 100*calibration_data(II).txt_cond_ratio(I_start), 'og', 'Markerfacecolor', 'g','MarkerSize',10)
@@ -370,12 +371,12 @@ for II = 1: length(calibration_data)
 end
 datetick
 set(gca,'xlim',[min_date-0.1*(max_date-min_date) max_date+0.1*(max_date-min_date)])
-legend('Good Start','Bad Start','Good End','Bad End','Location','southeast')
-set(gca,'Box','off');
+%set(gca,'Box','off');
+legend('Good Start','Bad Start','Good End','Bad End','Location','southeast');
 axesposition=get(gca,'Position');
 ylimits = get(gca,'ylim');
-hNewAxes = axes('Position', axesposition, 'color','none','Ylim',[sw_sals(ylimits(1)/100/2,24) sw_sals(ylimits(2)/100/2,24)],'Yaxislocation','right','xtick',[],'box','off');
-print -dpsc plot/calibrations_vs_date.ps
+%hNewAxes = axes('Position', axesposition, 'color','none','Ylim',[sw_sals(ylimits(1)/100/2,24) sw_sals(ylimits(2)/100/2,24)],'Yaxislocation','right','xtick',[],'box','off');
+print -depsc plot/calibrations_vs_date.eps
 %print plot/calibrations_vs_date.fig
 %savefig('plot/calibrations_vs_date.fig')
 
@@ -389,7 +390,8 @@ temp(find(temp>=500)) = [];
 min_station = min(temp);
 max_station = max(temp);
 
-figure;
+%figure;
+makefigexact4(8.5,11);
 for II = 1: length(calibration_data)
     I_start = find(calibration_data(II).txt_samp_nbr==1000 & calibration_data(II).txt_qc==2);
     plot (calibration_data(II).txt_station_id(I_start), 100*calibration_data(II).txt_cond_ratio(I_start), 'og', 'Markerfacecolor', 'g','MarkerSize',10)
@@ -432,7 +434,7 @@ set(gca,'Box','off');
 axesposition=get(gca,'Position');
 ylimits = get(gca,'ylim');
 hNewAxes = axes('Position', axesposition, 'color','none','Ylim',[sw_sals(ylimits(1)/100/2,24) sw_sals(ylimits(2)/100/2,24)],'Yaxislocation','right','xtick',[],'box','off');
-print -dpsc plot/calibrations_vs_station.ps
+print -depsc plot/calibrations_vs_station.eps
 %savefig('plot/calibrations_vs_station.fig')
 
 cd ..

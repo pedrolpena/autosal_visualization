@@ -364,7 +364,9 @@ else
             btl_correction(MM)  = (median  (salts.txt_cond_ratio(standard2_idx')) - nominal_std) * ones(length(salts.txt_cond_ratio(MM)),1);
         end
         
-        figure;
+        %figure;
+        makefigexact4(8.5,11);
+        %makeaxis(0,0,4.25,5.5);
             subplot(2,1,1);
                 plot(x_all,100*y_all,'ok','Markerfacecolor','k','MarkerSize',10)
                 hold on;
@@ -375,7 +377,7 @@ else
                 plot(x, 100*(m3(5)*x+b3(5)), 'r:', 'linewidth', 1.5)
                 plot(x, 100*(m4*x+b4), 'g:', 'linewidth', 1.5)
                 plot(x, 100*(m5*x+b5), 'y:', 'linewidth', 1.5)
-                legend ('All Standards', 'QC''d Standards', 'Fit from LSQ Reads', 'Fit from Median Reads', 'Fit from Mean Reads','Location','southeast') 
+                legend ('All Standards', 'QC''d Standards', 'Fit from LSQ Reads', 'Fit from Median Reads', 'Fit from Mean Reads','Location','southeast'); 
                 datetick
                 title (['Twice Standard Ratio times 100: ' upper(strrep(salts.file,'_',' '))])
   %              set(gca,'Box','off');
@@ -398,7 +400,7 @@ else
   %              axesposition=get(gca,'Position');
   %              ylimits = get(gca,'ylim');
   %              hNewAxes = axes('Position', axesposition, 'color','none','Ylim',[sw_sals((nominal_std+ylimits(1)/100000)/2,24) sw_sals((nominal_std+ylimits(2)/100000)/2,24)],'Yaxislocation','right','xtick',[],'box','off');
-                eval(['print -dpsc plot/cal_' salts.file '.ps'])
+                eval(['print -depsc plot/cal_' salts.file '.eps'])
                 %pause
                 %waitforbuttonpress;
                 

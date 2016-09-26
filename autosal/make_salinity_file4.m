@@ -76,11 +76,11 @@ if ~isempty(salts(1).txt_salinity_correction)
     for II = 2: length(salts);
         output_salinity_correction = [output_salinity_correction',salts(II).txt_salinity_correction']';
     end
-    output=double([0.0]);
-    output = double([output_sta,output_niskin,output_bottle,output_twiceratio,output_salinity,output_quality,output_cast,output_salinity_correction]);
+    % in octave this matrix is created as an int64 ceiling all of the values.
+    %this modification makes it both matlab and octave compatible.
+    output = [double(output_sta),double(output_niskin),double(output_bottle),double(output_twiceratio),double(output_salinity),double(output_quality),double(output_cast),double(output_salinity_correction)];
 else
-    output=double([0.0]);
-    output = double([output_sta,output_niskin output_bottle,output_twiceratio,output_salinity,output_quality,output_cast]);
+    output = [double(output_sta),double(output_niskin),double(output_bottle),double(output_twiceratio),double(output_salinity),double(output_quality),double(output_cast)];
 end
 
 II = find(output_sta == 1000);

@@ -139,7 +139,9 @@ end;
     Index_good = find(diff_dup_S <= nanmedian(diff_dup_S) + 2*nanstd(diff_dup_S) & diff_dup_S >= nanmedian(diff_dup_S) - 2*nanstd(diff_dup_S));
     Index_good_dups = find(diff_dup_S <= nanmedian(diff_dup_S(Index_good)) + 2*nanstd(diff_dup_S(Index_good)) & diff_dup_S >= nanmedian(diff_dup_S(Index_good)) - 2*nanstd(diff_dup_S(Index_good)));
 
-    figure;
+    %figure;
+     makefigexact4(8.5,11);
+     makeaxis(2,2,6.5,9);
         number_dups = [1:length(diff_dup_S)];
         plot(number_dups, diff_dup_S,'+');
         hold on;
@@ -152,12 +154,17 @@ end;
         [ylimits] = get(gca,'ylim');
         text([xlimits(1)+0.1*diff(xlimits)], [ylimits(2)-0.1*diff(ylimits)], ['Median = ' num2str(nanmedian(diff_dup_S(Index_good_dups)),5) ' +/- ' num2str(nanstd(diff_dup_S(Index_good_dups)),5)], 'fontsize', fonts)
         title (['Duplicate Salinity Differences from ' upper(strrep(this_name,'_',' '))], 'fontsize', 14);
-        set(gca,'xlim',[0.5 length(diff_dup_S)+0.5]);
+        %set(gca,'xlim',[0.5 length(diff_dup_S)+0.5]);
         xlabel('Duplicate number');
         ylabel('Salinity, psu');
-        print -dpsc plot/duplicates_salt_number.ps
+        set(gca,'xlim',[xlimits(1)-.03*xlimits(1),xlimits(2)+.03*xlimits(2)]);
+        set(gca,'ylim',[ylimits(1)-.03*ylimits(1),ylimits(2)+.03*ylimits(2)]);
+        %set(gca,'ylim',1.25*[ylimits]);
+
+        print -depsc plot/duplicates_salt_number.eps
         
-    figure;        
+     makefigexact4(8.5,11);
+     makeaxis(2,2,6.5,9);   
         plot(duplicate_station, diff_dup_S,'+');
         hold on;
         plot(duplicate_station(Index_good_dups), diff_dup_S(Index_good_dups), 'r+');
@@ -169,10 +176,13 @@ end;
         [ylimits] = get(gca,'ylim');
         text([xlimits(1)+0.1*diff(xlimits)], [ylimits(2)-0.1*diff(ylimits)], ['Median = ' num2str(nanmedian(diff_dup_S(Index_good_dups)),5) ' +/- ' num2str(nanstd(diff_dup_S(Index_good_dups)),5)], 'fontsize', fonts)
         title ('Duplicate Salinity', 'fontsize', fonts);
-        set(gca,'ylim',[ylimits(1) ylimits(2)]);       
+        %set(gca,'ylim',[ylimits(1) ylimits(2)]);
+        set(gca,'ylim',[ylimits(1)-.02*ylimits(1),ylimits(2)+.02*ylimits(2)]);
+        %set(gca,'ylim',1.5*[ylimits])
+        set(gca,'xlim',[xlimits(1)-.01*xlimits(1),xlimits(2)+.01*xlimits(2)]);         
         xlabel('Station number','fontsize', fonts);
         ylabel('Salinity Differences, psu','fontsize', fonts);
-        print -dpsc plot/salts_duplicates.ps
+        print -depsc plot/salts_duplicates.eps
     %
     % Average good duplicates and put the average value in the first
     % duplicate location and remove the second one
