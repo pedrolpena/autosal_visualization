@@ -73,7 +73,7 @@ fclose(fid);
 
 %
 % change the plots if you want
-i_want_many_plots =1;  % yes=1 (plot out each reading); no=0 (only plot summary and duplicates)
+i_want_many_plots =0;  % yes=1 (plot out each reading); no=0 (only plot summary and duplicates)
 correction_method = 1;
 %
 % End update section

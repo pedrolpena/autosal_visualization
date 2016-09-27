@@ -410,7 +410,7 @@ else
                 %eval(['print -depsc plot/cal_' salts.file '.eps']);
                 print('-depsc', [plotsDir,filesep,'cal_',salts.file,'.eps']);
                 %pause
-                %waitforbuttonpress;
+                waitforbuttonpress;
                 
  %      figure;
  %           plot(salts.txt_date, 100*salts.txt_cond_ratio, 'ok','Markerfacecolor','b','MarkerSize',10)
