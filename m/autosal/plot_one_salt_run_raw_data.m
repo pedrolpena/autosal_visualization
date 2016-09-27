@@ -20,7 +20,7 @@ for II = 1: length(salts.unique_sample_str);
 
     %figure;
     makefigexact4(7,4);
-        wysiwyg;
+        %wysiwyg;
         plot(JJ_match_raw(find(salts.raw_reading_num(JJ_match_raw)==1)), 100*salts.raw_uncorr_ratio(JJ_match_raw(find(salts.raw_reading_num(JJ_match_raw)==1))), 'b*','markersize',10,'linewidth',2)
         hold on
  %
@@ -31,7 +31,7 @@ for II = 1: length(salts.unique_sample_str);
             num2str(std(100*salts.raw_uncorr_ratio(JJ_match_raw)),7)  '    median = ' num2str(median(100*salts.raw_uncorr_ratio(JJ_match_raw)),7)]);
  
         set(h,'Horizontalalignment','center')
-        title([upper(strrep(salts.file,'_',' ')) ' : ' strrep(char(salts.unique_sample_str(II)),'_',' ')])
+        title([upper(strrep(salts.file,'_',' ')) ' : ' strrep(char(salts.unique_sample_str(II)),'_',' ')], 'fontsize', 14)
         plot(JJ_match_raw(find(salts.raw_reading_num(JJ_match_raw)==2)), 100*salts.raw_uncorr_ratio(JJ_match_raw(find(salts.raw_reading_num(JJ_match_raw)==2))), 'rx','markersize',10,'linewidth',2)
         plot(JJ_match_raw(find(salts.raw_reading_num(JJ_match_raw)==3)), 100*salts.raw_uncorr_ratio(JJ_match_raw(find(salts.raw_reading_num(JJ_match_raw)==3))), 'g.','markersize',10,'linewidth',2)
         plot(JJ_match_raw(find(salts.raw_reading_num(JJ_match_raw)==4)), 100*salts.raw_uncorr_ratio(JJ_match_raw(find(salts.raw_reading_num(JJ_match_raw)==4))), 'c+','markersize',10,'linewidth',2)
@@ -133,7 +133,12 @@ for II = 1: length(salts.unique_sample_str);
         set(gca,'Box','off');
         axesposition=get(gca,'Position');
         ylimits = get(gca,'ylim');
+        origAxis=gca;
         hNewAxes = axes('Position', axesposition, 'color', 'none', 'Ylim', [sw_sals(ylimits(1)/100,24) sw_sals(ylimits(2)/100,24)], 'Yaxislocation', 'right', 'xtick', [], 'box', 'off');
+        set(hNewAxes,'position',axesposition*.9);
+        set(hNewAxes,'position',axesposition);
+        set(origAxis,'position',axesposition*.9);
+        set(origAxis,'position',axesposition);
         %pause;
         waitforbuttonpress;
         close;

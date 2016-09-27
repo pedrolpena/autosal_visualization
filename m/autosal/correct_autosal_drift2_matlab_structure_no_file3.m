@@ -1,4 +1,4 @@
-function theResult  = correct_autosal_drift2_matlab_structure_no_file3 (nominal_std, salts, use_method, input_slope_m, input_offset_b)
+function theResult  = correct_autosal_drift2_matlab_structure_no_file3 (nominal_std, salts, use_method, input_slope_m, input_offset_b,plotsDir)
 % CORRECT_AUTOSAL_DRIFT2_MATLAB_STRUCTURE - correct for autosal drift with pre/post standards 
 % 
 % CTD Calibration toolbox
@@ -65,9 +65,9 @@ error_for_drift     = 0.00006;
 
 %
 % check that plot subdirectory exists.  If not, create it.
-if ~exist('plot','dir')
-    mkdir plot
-end
+% if ~exist('plot','dir')
+%     mkdir plot
+% end
 
 fprintf (1, ['\n\n\n Processing ' salts.file '\n\n\n']);
 
@@ -377,8 +377,14 @@ else
                 plot(x, 100*(m3(5)*x+b3(5)), 'r:', 'linewidth', 1.5)
                 plot(x, 100*(m4*x+b4), 'g:', 'linewidth', 1.5)
                 plot(x, 100*(m5*x+b5), 'y:', 'linewidth', 1.5)
-                lh=legend ('All Standards', 'QC''d Standards', 'Fit from LSQ Reads', 'Fit from Median Reads', 'Fit from Mean Reads'); 
-                set(lh,'Location','south','orientation','horizontal','Plotboxaspectratio',[0.8 0.8 0.8]);
+                %lh=legend ('All Standards', 'QC''d Standards', 'Fit from LSQ Reads', 'Fit from Median Reads', 'Fit from Mean Reads'); 
+                if is_octave
+                   lh=legend ('All Standards', 'QC''d Standards', 'Fit from LSQ Reads', 'Fit from Median Reads', 'Fit from Mean Reads'); 
+                    set(lh,'Location','south','orientation','horizontal','Plotboxaspectratio',[0.8 0.8 0.8]);
+                else
+                     lh=legend ('All Standards', 'QC''d Standards', 'Fit from LSQ Reads', 'Fit from Median Reads', 'Fit from Mean Reads','Location','best'); 
+
+                end
                 datetick
                 title (['Twice Standard Ratio times 100: ' upper(strrep(salts.file,'_',' '))])
   %              set(gca,'Box','off');
@@ -401,7 +407,8 @@ else
   %              axesposition=get(gca,'Position');
   %              ylimits = get(gca,'ylim');
   %              hNewAxes = axes('Position', axesposition, 'color','none','Ylim',[sw_sals((nominal_std+ylimits(1)/100000)/2,24) sw_sals((nominal_std+ylimits(2)/100000)/2,24)],'Yaxislocation','right','xtick',[],'box','off');
-                eval(['print -depsc plot/cal_' salts.file '.eps'])
+                %eval(['print -depsc plot/cal_' salts.file '.eps']);
+                print('-depsc', [plotsDir,filesep,'cal_',salts.file,'.eps']);
                 %pause
                 %waitforbuttonpress;
                 

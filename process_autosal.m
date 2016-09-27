@@ -21,29 +21,59 @@
 %%%%%
 %
 apath;
-sdir=dir('salts');
-if size(sdir)~=0
-    cd salts
-end;
-delete('*.mat');
+workingDir=pwd();
+cfgDir=[workingDir,filesep,'cfg'];
+rawDataDir=[workingDir,filesep,'raw_data'];
+databaseDir=[workingDir,filesep,'database'];
+plotsDir=[workingDir,filesep,'plots'];
+logDir=[workingDir,filesep,'logs'];
+
+
+if ~exist(cfgDir,'dir')
+    mkdir(cfgDir);
+end
+
+if ~exist(rawDataDir,'dir')
+    mkdir(rawDataDir);
+end
+
+if ~exist(databaseDir,'dir')
+    mkdir(databaseDir);
+end
+
+if ~exist(plotsDir,'dir')
+    mkdir(plotsDir);
+end
+
+if ~exist(logDir,'dir')
+    mkdir(logDir);
+end
+
+
+
+% sdir=dir('salts');
+% if size(sdir)~=0
+%     cd salts
+% end;
+% delete('*.mat');
 % UPDATE SECTION
 output_file = 'process_output';
 %======================================================================
-%This loop will read in the IAPSO Standard Seawater
+%The following will read in the IAPSO Standard Seawater
 %from a text file named "standard_sewater_batch_values.txt" the format
 %has to be batch number [single space] K15 value.
 %Example  "158 .99970"
 %======================================================================
-pathn='./';
+
 fileToRead='standard_sewater_batch_values.txt';
-fid=fopen([pathn fileToRead],'r');
+fid=fopen([cfgDir,filesep,fileToRead],'r');
 cruiseVars=textscan(fid,'%s %s','Delimiter',',','CommentStyle','#');
 fclose(fid);
 
 
 %
 % change the plots if you want
-i_want_many_plots =0;  % yes=1 (plot out each reading); no=0 (only plot summary and duplicates)
+i_want_many_plots =1;  % yes=1 (plot out each reading); no=0 (only plot summary and duplicates)
 correction_method = 1;
 %
 % End update section
@@ -59,8 +89,8 @@ correction_method = 1;
 % Open existing salts data base if one exists in this directory
 %
 clear autosal_salts
-if exist ('autosal_salts_db.mat','file')
-    load autosal_salts_db.mat
+if exist([databaseDir,filesep,'autosal_salts_db.mat'],'file');
+    load([databaseDir,filesep,'autosal_salts_db.mat']);
 end
 %
 %%%%%%
@@ -76,7 +106,7 @@ end
 % Assumes that all *.dat files have the corresponding *.hrd and *.raw files
 % with the same root filename.
 %
-flist = dir('*.dat');
+flist = dir([rawDataDir,filesep,'*.dat']);
 
 if length(flist) < 1
     sprintf('Warning: no *.dat files in this directory \n \t %s \nExiting now. \n',pwd)
@@ -152,7 +182,7 @@ if (~isempty(KK_index_of_new_files))
     for II = 1: length(KK_index_of_new_files)
         flist(KK_index_of_new_files(II)).name
         this_file = flist(KK_index_of_new_files(II)).name;
-        tmpsalts(II) = read_autosal_dat_raw_mb (flist(KK_index_of_new_files(II)).name);
+        tmpsalts(II) = read_autosal_dat_raw_mb ([rawDataDir,filesep,flist(KK_index_of_new_files(II)).name]);
     end
 else
     sprintf('No new *.dat files not already in autosal_salts_db.mat in this directory \n \t %s \nExiting now. \n',pwd)
@@ -223,7 +253,7 @@ if num_new_files > 0
         % 2.*standard_sea_water_batch(tmpsalts(II).batch_number)
         BatchNum=num2str(tmpsalts(II).batch_number);
         K15=str2num(get_cruise_variable_value(cruiseVars,BatchNum));
-        tmp(II) = correct_autosal_drift2_matlab_structure_no_file3 (2.* K15, tmpsalts(II), 1, 0, 0);
+        tmp(II) = correct_autosal_drift2_matlab_structure_no_file3 (2.* K15, tmpsalts(II), 1, 0, 0,plotsDir);
         % Note:
         % correct_autosal_drift2_matlab_structure
         % adds the following fields to theResult
@@ -261,7 +291,7 @@ end
 % With the corrected newtxt values create a salt file
 %
 output = make_salinity_file4 (autosal_salts);
-[output, duplicate_S] = average_and_remove_duplicates_aoml4 (output, [output_file '_salts.txt']);
+[output, duplicate_S] = average_and_remove_duplicates_aoml4 (output, [output_file '_salts.txt'],plotsDir,databaseDir,logDir);
 %-
 %%%%%
 
@@ -272,8 +302,8 @@ output = make_salinity_file4 (autosal_salts);
 %
 calibration_data = get_calibrations_from_salts2 (autosal_salts);
 
-save autosal_salts_db.mat autosal_salts
-save calibrations_db.mat calibration_data
+save([databaseDir,filesep,'autosal_salts_db.mat'], 'autosal_salts','-v6');
+save([databaseDir,filesep,'calibrations_db.mat'], 'calibration_data','-v6');
 
 %%%%%%%%%%%%%%%%%%%%% Create an autosal run summary %%%%%%%%%%%%%%%%%%%%%%%
 
@@ -313,7 +343,7 @@ dup_s=length(duplicate_S);
 submit_salts=good_sample-dup_s;
 dup_perc=(dup_s/good_sample)*100;
 
-nf=fopen(['autosal_summary.txt'],'w');
+nf=fopen([logDir,filesep,'autosal_summary.txt'],'w');
 fprintf(nf, ['Cruise summary for autosal\n']);
 fprintf(nf, ['Autosal cruise drift: ',num2str(cond_cruise_drift), '\n']);
 fprintf(nf, ['Autosal cruise drift (salinity): ',num2str(sal_cruise_drift), '\n']);
@@ -381,7 +411,7 @@ hNewAxes = axes('Position', axesposition, 'color','none','Ylim',[sw_sals(ylimits
 set(hNewAxes,'Position',axesposition);
 set(axis0,'Position',axesposition*.9);
 set(axis0,'Position',axesposition);
-print -depsc plot/calibrations_vs_date.eps
+print('-depsc', [plotsDir,filesep,'calibrations_vs_date.eps']);
 %print plot/calibrations_vs_date.fig
 %savefig('plot/calibrations_vs_date.fig')
 
@@ -436,12 +466,14 @@ ylimits = get(gca,'ylim');
 axis1=gca;
 hNewAxes = axes('Position', axesposition, 'color','none','Ylim',[sw_sals(ylimits(1)/100/2,24) sw_sals(ylimits(2)/100/2,24)],'Yaxislocation','right','xtick',[],'box','off');
 
-set(hNewAxes,'Position',axesposition);
+
 set(axis1,'Position',axesposition*.9);
 set(axis1,'Position',axesposition);
-set(gcf,'Position',fig1Pos*.9);
-set(gcf,'Position',fig1Pos);
-print -dpsc  plot/calibrations_vs_station.ps
+set(hNewAxes,'Position',axesposition*.9);
+set(hNewAxes,'Position',axesposition);
+%set(gcf,'Position',fig1Pos*.9);
+%set(gcf,'Position',fig1Pos);
+print('-depsc', [plotsDir,filesep,'calibrations_vs_station.eps']);
 %savefig('plot/calibrations_vs_station.fig')
 
-cd ..
+

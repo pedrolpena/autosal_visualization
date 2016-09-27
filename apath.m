@@ -1,4 +1,4 @@
-addpath(genpath(pwd()));
+addpath(genpath([pwd(),filesep,'m']));
 
 if is_octave ==1
     warning ('off', 'Octave:divide-by-zero');

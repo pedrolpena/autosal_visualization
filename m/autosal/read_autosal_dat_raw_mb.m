@@ -101,7 +101,7 @@ tmp_salts.batch_number=temp_batch_number(1);
 % Read equivalent raw data file as well.
 % File should be in same directory etc as the dat file.
 %
-raw_file = [pathstr this_name '.raw'];
+raw_file = [pathstr,filesep,this_name '.raw'];
 [tmp_salts.raw_sample_id_str, tmp_salts.raw_reading_num, tmp_salts.raw_uncorr_ratio, tmp_salts.raw_adj_ratio, tmp_salts.raw_calc_s] = textread(raw_file,'%s %d %f %f %f ', 'headerlines',1,'delimiter','\t ');
 std_idx = find(tmp_salts.sample_num==1000);
  

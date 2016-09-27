@@ -1,4 +1,4 @@
-function [theResult, duplicate_S] = average_and_remove_duplicates_aoml4 (output, outfile)
+function [theResult, duplicate_S] = average_and_remove_duplicates_aoml4 (output, outfile,plotsDir,databaseDir,logDir)
 %
 % Find duplicate samples in output array
 %
@@ -50,7 +50,7 @@ index_dups = find_repeats3 (output);
 %
 if ~isempty(index_dups)
 saved_output_dups = output(sort([index_dups(:,1)' index_dups(:,2)']'),:);
-save saved_output_dups.mat saved_output_dups index_dups
+save([databaseDir,filesep,'saved_output_dups.mat'],'saved_output_dups','index_dups','-v6');
 end;
 %-
 %%%%%
@@ -101,7 +101,7 @@ if 1,
             end
         end;
     end;
-    fid=fopen(['duplicates_salt.tab'],'w');
+    fid=fopen([logDir,filesep,'duplicates_salt.tab'],'w');
     fprintf(fid,'%s','\begin{longtable}{ccccc}');
     fprintf(fid,'\n');    
     fprintf(fid,'%s','\caption{Duplicate salinity samples collected during the ABACO cruise.}\\');
@@ -161,7 +161,7 @@ end;
         set(gca,'ylim',[ylimits(1)-.03*ylimits(1),ylimits(2)+.03*ylimits(2)]);
         %set(gca,'ylim',1.25*[ylimits]);
 
-        print -depsc plot/duplicates_salt_number.eps
+        print('-depsc', [plotsDir,filesep,'duplicates_salt_number.eps']);
         
      makefigexact4(7,4);
      %makeaxis(2,2,6.5,9);   
@@ -182,7 +182,7 @@ end;
         set(gca,'xlim',[xlimits(1)-.01*xlimits(1),xlimits(2)+.01*xlimits(2)]);         
         xlabel('Station number','fontsize', fonts);
         ylabel('Salinity Differences, psu','fontsize', fonts);
-        print -depsc plot/salts_duplicates.eps
+        print('-depsc', [plotsDir,filesep,'salts_duplicates.eps']);
     %
     % Average good duplicates and put the average value in the first
     % duplicate location and remove the second one
@@ -216,7 +216,7 @@ end;
 end
 
 
-fid=fopen(outfile,'wt');
+fid=fopen([logDir,filesep,outfile],'wt');
 if (size(output,2) == 7)
     fprintf(fid,'%%Station\t Cast\t Niskin\t Sample_Bottle\t 2*Cond. Ratio Corrected Salinity\n');
 elseif (size(output,2) == 8)
@@ -233,7 +233,7 @@ end
 
 fclose(fid);
 
-fid=fopen('cruise_salts','wt');
+fid=fopen([logDir,filesep,'cruise_salts.txt'],'wt');
 
 %for a16s
 for i = 1: size(output,1)
