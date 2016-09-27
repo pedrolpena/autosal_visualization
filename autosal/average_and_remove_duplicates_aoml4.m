@@ -140,8 +140,8 @@ end;
     Index_good_dups = find(diff_dup_S <= nanmedian(diff_dup_S(Index_good)) + 2*nanstd(diff_dup_S(Index_good)) & diff_dup_S >= nanmedian(diff_dup_S(Index_good)) - 2*nanstd(diff_dup_S(Index_good)));
 
     %figure;
-     makefigexact4(8.5,11);
-     makeaxis(2,2,6.5,9);
+     makefigexact4(7,4);
+     %makeaxis(2,2,6.5,9);
         number_dups = [1:length(diff_dup_S)];
         plot(number_dups, diff_dup_S,'+');
         hold on;
@@ -163,8 +163,8 @@ end;
 
         print -depsc plot/duplicates_salt_number.eps
         
-     makefigexact4(8.5,11);
-     makeaxis(2,2,6.5,9);   
+     makefigexact4(7,4);
+     %makeaxis(2,2,6.5,9);   
         plot(duplicate_station, diff_dup_S,'+');
         hold on;
         plot(duplicate_station(Index_good_dups), diff_dup_S(Index_good_dups), 'r+');

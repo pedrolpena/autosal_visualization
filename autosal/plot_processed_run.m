@@ -47,7 +47,7 @@ while (station_number_to_plot >=0)
     end
     
     %figure
-    makefigexact4(8.5,11);
+    makefigexact4(7,4);
         subplot(2,1,1)
             plot (autosal_salts(index_of_station_to_plot).txt_date, 100/2*autosal_salts(index_of_station_to_plot).txt_cond_ratio, 'sk', 'Markerfacecolor', 'k','MarkerSize',5)
             hold on;
@@ -98,7 +98,7 @@ while (station_number_to_plot >=0)
             grid
 
     %figure;
-    makefigexact4(8.5,11);
+    makefigexact4(7,4);
         subplot(2,1,1)
             plot (autosal_salts(index_of_station_to_plot).txt_salinity_correct, 1000*autosal_salts(index_of_station_to_plot).txt_salinity_correction, 'sk', 'Markerfacecolor', 'k','MarkerSize',5)
             hold on;

@@ -25,6 +25,7 @@ sdir=dir('salts');
 if size(sdir)~=0
     cd salts
 end;
+delete('*.mat');
 % UPDATE SECTION
 output_file = 'process_output';
 %======================================================================
@@ -334,7 +335,7 @@ clear dup_s submit_salts
 min_date = min(calibration_data(1).txt_date);
 max_date = max(calibration_data(end).txt_date);
 %figure;
-makefigexact4(8.5,11);
+makefigexact4(7,4);
 for II = 1: length(calibration_data)
     I_start = find(calibration_data(II).txt_samp_nbr==1000 & calibration_data(II).txt_qc==2);
     plot (calibration_data(II).txt_date(I_start), 100*calibration_data(II).txt_cond_ratio(I_start), 'og', 'Markerfacecolor', 'g','MarkerSize',10)
@@ -371,11 +372,15 @@ for II = 1: length(calibration_data)
 end
 datetick
 set(gca,'xlim',[min_date-0.1*(max_date-min_date) max_date+0.1*(max_date-min_date)])
-%set(gca,'Box','off');
-legend('Good Start','Bad Start','Good End','Bad End','Location','southeast');
+legend('Good Start','Bad Start','Good End','Bad End','Location','northoutside','orientation','horizontal')
+set(gca,'Box','off');
 axesposition=get(gca,'Position');
 ylimits = get(gca,'ylim');
-%hNewAxes = axes('Position', axesposition, 'color','none','Ylim',[sw_sals(ylimits(1)/100/2,24) sw_sals(ylimits(2)/100/2,24)],'Yaxislocation','right','xtick',[],'box','off');
+axis0=gca;
+hNewAxes = axes('Position', axesposition, 'color','none','Ylim',[sw_sals(ylimits(1)/100/2,24) sw_sals(ylimits(2)/100/2,24)],'Yaxislocation','right','xtick',[],'box','off');
+set(hNewAxes,'Position',axesposition);
+set(axis0,'Position',axesposition*.9);
+set(axis0,'Position',axesposition);
 print -depsc plot/calibrations_vs_date.eps
 %print plot/calibrations_vs_date.fig
 %savefig('plot/calibrations_vs_date.fig')
@@ -391,32 +396,25 @@ min_station = min(temp);
 max_station = max(temp);
 
 %figure;
-makefigexact4(8.5,11);
+makefigexact4(7,4);
+fig1Pos=get(gcf,'Position')
 for II = 1: length(calibration_data)
     I_start = find(calibration_data(II).txt_samp_nbr==1000 & calibration_data(II).txt_qc==2);
     plot (calibration_data(II).txt_station_id(I_start), 100*calibration_data(II).txt_cond_ratio(I_start), 'og', 'Markerfacecolor', 'g','MarkerSize',10)
     hold on;
-    %min_station = min(min(calibration_data(II).txt_station_id(I_start)), min_station);
-    %max_station = max(max(calibration_data(II).txt_station_id(I_start)), max_station);
+
     
     I_start = find(calibration_data(II).txt_samp_nbr==1000 & calibration_data(II).txt_qc==4);
     plot (calibration_data(II).txt_station_id(I_start), 100*calibration_data(II).txt_cond_ratio(I_start), 'ok', 'Markerfacecolor', 'k','MarkerSize',10);
-    if ~isempty(I_start)
-        %min_station = min(min(calibration_data(II).txt_station_id(I_start)), min_station);
-        %max_station = max(max(calibration_data(II).txt_station_id(I_start)), max_station);
-    end
+
     
     I_start = find(calibration_data(II).txt_samp_nbr==1001 & calibration_data(II).txt_qc==2);
     plot (calibration_data(II).txt_station_id( I_start), 100*calibration_data(II).txt_cond_ratio(I_start), 'vr', 'Markerfacecolor', 'r','MarkerSize',10)
-    %min_station = min(min(calibration_data(II).txt_station_id(I_start)), min_station);
-    %max_station = max(max(calibration_data(II).txt_station_id(I_start)), max_station);
+
     
     I_start = find(calibration_data(II).txt_samp_nbr==1001 & calibration_data(II).txt_qc==4);
     plot (calibration_data(II).txt_station_id( I_start), 100*calibration_data(II).txt_cond_ratio(I_start), 'vy', 'Markerfacecolor', 'y','MarkerSize',10)
-    if ~isempty(I_start)
-        %min_station = min(min(calibration_data(II).txt_station_id(I_start)), min_station);
-        %max_station = max(max(calibration_data(II).txt_station_id(I_start)), max_station);
-    end
+
     
     %
     % plot these dgood values again so that their symbols appear on the top
@@ -427,14 +425,23 @@ for II = 1: length(calibration_data)
     I_start = find(calibration_data(II).txt_samp_nbr==1000 & calibration_data(II).txt_qc==2);
     plot (calibration_data(II).txt_station_id(I_start), 100*calibration_data(II).txt_cond_ratio(I_start), 'og', 'Markerfacecolor', 'g','MarkerSize',10)
 end
+legend('Good Start','Bad Start','Good End','Bad End','Location','northoutside','orientation','horizontal')
 xlabel('Station Number')
 set(gca,'xlim',[min_station-0.1*(max_station-min_station) max_station+0.1*(max_station-min_station)])
-legend('Good Start','Bad Start','Good End','Bad End','Location','southeast')
 set(gca,'Box','off');
+
+
 axesposition=get(gca,'Position');
 ylimits = get(gca,'ylim');
+axis1=gca;
 hNewAxes = axes('Position', axesposition, 'color','none','Ylim',[sw_sals(ylimits(1)/100/2,24) sw_sals(ylimits(2)/100/2,24)],'Yaxislocation','right','xtick',[],'box','off');
-print -depsc plot/calibrations_vs_station.eps
+
+set(hNewAxes,'Position',axesposition);
+set(axis1,'Position',axesposition*.9);
+set(axis1,'Position',axesposition);
+set(gcf,'Position',fig1Pos*.9);
+set(gcf,'Position',fig1Pos);
+print -dpsc  plot/calibrations_vs_station.ps
 %savefig('plot/calibrations_vs_station.fig')
 
 cd ..

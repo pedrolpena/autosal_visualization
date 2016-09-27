@@ -19,7 +19,7 @@ for II = 1: length(salts.unique_sample_str);
 %     JJ_match_raw = strmatch(salts.unique_sample_str(II), salts.raw_sample_id_str,'exact');
 
     %figure;
-    makefigexact4(8.5,11);
+    makefigexact4(7,4);
         wysiwyg;
         plot(JJ_match_raw(find(salts.raw_reading_num(JJ_match_raw)==1)), 100*salts.raw_uncorr_ratio(JJ_match_raw(find(salts.raw_reading_num(JJ_match_raw)==1))), 'b*','markersize',10,'linewidth',2)
         hold on

@@ -365,7 +365,7 @@ else
         end
         
         %figure;
-        makefigexact4(8.5,11);
+        makefigexact4(7,4);
         %makeaxis(0,0,4.25,5.5);
             subplot(2,1,1);
                 plot(x_all,100*y_all,'ok','Markerfacecolor','k','MarkerSize',10)
@@ -377,7 +377,8 @@ else
                 plot(x, 100*(m3(5)*x+b3(5)), 'r:', 'linewidth', 1.5)
                 plot(x, 100*(m4*x+b4), 'g:', 'linewidth', 1.5)
                 plot(x, 100*(m5*x+b5), 'y:', 'linewidth', 1.5)
-                legend ('All Standards', 'QC''d Standards', 'Fit from LSQ Reads', 'Fit from Median Reads', 'Fit from Mean Reads','Location','southeast'); 
+                lh=legend ('All Standards', 'QC''d Standards', 'Fit from LSQ Reads', 'Fit from Median Reads', 'Fit from Mean Reads'); 
+                set(lh,'Location','south','orientation','horizontal','Plotboxaspectratio',[0.8 0.8 0.8]);
                 datetick
                 title (['Twice Standard Ratio times 100: ' upper(strrep(salts.file,'_',' '))])
   %              set(gca,'Box','off');
