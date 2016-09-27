@@ -20,7 +20,7 @@
 %
 %%%%%
 %
-
+apath;
 sdir=dir('salts');
 if size(sdir)~=0
     cd salts
