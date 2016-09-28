@@ -1,4 +1,4 @@
-function plot_one_salt_run_raw_data (salts)
+function plot_one_salt_run_raw_data (salts,pause_after_plot)
 
 %
 % Lets do some plotting for each sample
@@ -140,8 +140,11 @@ for II = 1: length(salts.unique_sample_str);
         set(origAxis,'position',axesposition*.9);
         set(origAxis,'position',axesposition);
         %pause;
-        waitforbuttonpress;
-        close;
+        if pause_after_plot ==1
+            waitforbuttonpress;
+            close;
+        end
+        
 end;
 
 

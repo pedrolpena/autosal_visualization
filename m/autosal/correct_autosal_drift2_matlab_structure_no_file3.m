@@ -1,4 +1,4 @@
-function theResult  = correct_autosal_drift2_matlab_structure_no_file3 (nominal_std, salts, use_method, input_slope_m, input_offset_b,plotsDir)
+function theResult  = correct_autosal_drift2_matlab_structure_no_file3 (nominal_std, salts, use_method, input_slope_m, input_offset_b,plotsDir,pause_after_plot)
 % CORRECT_AUTOSAL_DRIFT2_MATLAB_STRUCTURE - correct for autosal drift with pre/post standards 
 % 
 % CTD Calibration toolbox
@@ -410,7 +410,9 @@ else
                 %eval(['print -depsc plot/cal_' salts.file '.eps']);
                 print('-depsc', [plotsDir,filesep,'cal_',salts.file,'.eps']);
                 %pause
-                waitforbuttonpress;
+                if pause_after_plot==1
+                    waitforbuttonpress;
+                end
                 
  %      figure;
  %           plot(salts.txt_date, 100*salts.txt_cond_ratio, 'ok','Markerfacecolor','b','MarkerSize',10)

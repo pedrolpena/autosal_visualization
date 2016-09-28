@@ -70,16 +70,27 @@ fid=fopen([cfgDir,filesep,fileToRead],'r');
 cruiseVars=textscan(fid,'%s %s','Delimiter',',','CommentStyle','#');
 fclose(fid);
 
+%======================================================================
+%The following will read in the COnfiguration paramters 
+%from a text file named "config.cfg" 
+%======================================================================
+
+fileToRead='config.cfg';
+fid=fopen([cfgDir,filesep,fileToRead],'r');
+params=textscan(fid,'%s %s','Delimiter','=','CommentStyle','#');
+fclose(fid);
+
 
 %
 % change the plots if you want
-i_want_many_plots =0;  % yes=1 (plot out each reading); no=0 (only plot summary and duplicates)
-correction_method = 1;
+% yes=1 (plot out each reading); no=0 (only plot summary and duplicates)
+i_want_many_plots = str2num(get_cruise_variable_value(params,'show_all_plots'));  
+correction_method = str2num(get_cruise_variable_value(params,'correction_method'));
 %
 % End update section
 %
 %%%%%%
-
+pause_after_plot = str2num(get_cruise_variable_value(params,'pause_after_plot'));
 
 
 
@@ -201,7 +212,7 @@ end
 if num_new_files > 0
     if i_want_many_plots
         for II = 1: num_new_files
-            plot_one_salt_run_raw_data(tmpsalts(II));
+            plot_one_salt_run_raw_data(tmpsalts(II),pause_after_plot);
         end
     end
 end
@@ -253,7 +264,7 @@ if num_new_files > 0
         % 2.*standard_sea_water_batch(tmpsalts(II).batch_number)
         BatchNum=num2str(tmpsalts(II).batch_number);
         K15=str2num(get_cruise_variable_value(cruiseVars,BatchNum));
-        tmp(II) = correct_autosal_drift2_matlab_structure_no_file3 (2.* K15, tmpsalts(II), 1, 0, 0,plotsDir);
+        tmp(II) = correct_autosal_drift2_matlab_structure_no_file3 (2.* K15, tmpsalts(II), 1, 0, 0,plotsDir,pause_after_plot);
         % Note:
         % correct_autosal_drift2_matlab_structure
         % adds the following fields to theResult
