@@ -20,13 +20,63 @@
 %
 %%%%%
 %
+clear;
 apath;
 workingDir=pwd();
 cfgDir=[workingDir,filesep,'cfg'];
-rawDataDir=[workingDir,filesep,'raw_data'];
-databaseDir=[workingDir,filesep,'database'];
-plotsDir=[workingDir,filesep,'plots'];
-logDir=[workingDir,filesep,'logs'];
+
+%=========================================================================
+%=========================================================================
+% This piece loads the contents config.cfg into
+% cell matrix 'params'
+% The file is first read and copied to a temporary file without spaces that
+% could potentially confuse textscan.
+
+fileToRead=[cfgDir,filesep,'config.cfg'];
+fileToWrite=[cfgDir,filesep,'config.cfg.tmp'];
+fid=fopen(fileToRead,'r');
+fidW=fopen(fileToWrite,'w');
+
+tline = fgetl(fid);
+while ischar(tline)
+    
+    if ~ischar(tline)
+        break;
+    end
+    
+    if ~isempty(tline)
+        fprintf(fidW,[tline,'\r\n']);
+    end
+    tline = fgetl(fid);
+end
+
+fclose(fidW);
+fidW=fopen(fileToWrite,'r');
+params=textscan(fidW,'%s %s','Delimiter','=','CommentStyle','#');
+
+fclose(fid);
+fclose(fidW);
+delete(fileToWrite);
+%======================================================================
+%======================================================================
+rawDataDir=get_cruise_variable_value(params,'rawDataDir');
+databaseDir=get_cruise_variable_value(params,'databaseDir');
+plotsDir=get_cruise_variable_value(params,'plotsDir');
+logDir=get_cruise_variable_value(params,'logDir');
+
+if strcmp(rawDataDir,'default')
+    rawDataDir=[workingDir,filesep,'raw_data'];
+end
+if strcmp(databaseDir,'default')
+    databaseDir=[workingDir,filesep,'database'];
+end
+if strcmp(plotsDir,'default')
+    plotsDir=[workingDir,filesep,'plots'];
+end
+if strcmp(logDir,'default')
+    logDir=[workingDir,filesep,'logs'];
+end
+
 
 
 if ~exist(cfgDir,'dir')
@@ -65,26 +115,46 @@ output_file = 'process_output';
 %Example  "158 .99970"
 %======================================================================
 
-fileToRead='standard_sewater_batch_values.txt';
-fid=fopen([cfgDir,filesep,fileToRead],'r');
-cruiseVars=textscan(fid,'%s %s','Delimiter',',','CommentStyle','#');
-fclose(fid);
+% fileToRead='standard_sewater_batch_values.txt';
+% fid=fopen([cfgDir,filesep,fileToRead],'r');
+% cruiseVars=textscan(fid,'%s %s','Delimiter',',','CommentStyle','#');
+% fclose(fid);
 
-%======================================================================
-%The following will read in the COnfiguration paramters 
-%from a text file named "config.cfg" 
+
+fileToRead=[cfgDir,filesep,'standard_sewater_batch_values.txt'];
+fileToWrite=[cfgDir,filesep,'standard_sewater_batch_values.txt.tmp'];
+fid=fopen(fileToRead,'r');
+fidW=fopen(fileToWrite,'w');
+
+tline = fgetl(fid);
+while ischar(tline)
+    
+    if ~ischar(tline)
+        break;
+    end
+    
+    if ~isempty(tline)
+        fprintf(fidW,[tline,'\r\n']);
+    end
+    tline = fgetl(fid);
+end
+
+fclose(fidW);
+fidW=fopen(fileToWrite,'r');
+cruiseVars=textscan(fidW,'%s %s','Delimiter',',','CommentStyle','#');
+
+fclose(fid);
+fclose(fidW);
+delete(fileToWrite);
 %======================================================================
 
-fileToRead='config.cfg';
-fid=fopen([cfgDir,filesep,fileToRead],'r');
-params=textscan(fid,'%s %s','Delimiter','=','CommentStyle','#');
-fclose(fid);
+
 
 
 %
 % change the plots if you want
 % yes=1 (plot out each reading); no=0 (only plot summary and duplicates)
-i_want_many_plots = str2num(get_cruise_variable_value(params,'show_all_plots'));  
+i_want_many_plots = str2num(get_cruise_variable_value(params,'show_all_plots'));
 correction_method = str2num(get_cruise_variable_value(params,'correction_method'));
 %
 % End update section
@@ -120,7 +190,7 @@ end
 flist = dir([rawDataDir,filesep,'*.dat']);
 
 if length(flist) < 1
-    sprintf('Warning: no *.dat files in this directory \n \t %s \nExiting now. \n',pwd)
+    sprintf('Warning: no *.dat files in this directory \n \t %s \nExiting now. \n',rawDataDir)
     return
 end
 %
@@ -196,7 +266,7 @@ if (~isempty(KK_index_of_new_files))
         tmpsalts(II) = read_autosal_dat_raw_mb ([rawDataDir,filesep,flist(KK_index_of_new_files(II)).name]);
     end
 else
-    sprintf('No new *.dat files not already in autosal_salts_db.mat in this directory \n \t %s \nExiting now. \n',pwd)
+    sprintf('No new *.dat files to process in this directory \n \t %s \nExiting now. \n',rawDataDir)
     return
 end
 %
@@ -443,19 +513,19 @@ for II = 1: length(calibration_data)
     I_start = find(calibration_data(II).txt_samp_nbr==1000 & calibration_data(II).txt_qc==2);
     plot (calibration_data(II).txt_station_id(I_start), 100*calibration_data(II).txt_cond_ratio(I_start), 'og', 'Markerfacecolor', 'g','MarkerSize',10)
     hold on;
-
+    
     
     I_start = find(calibration_data(II).txt_samp_nbr==1000 & calibration_data(II).txt_qc==4);
     plot (calibration_data(II).txt_station_id(I_start), 100*calibration_data(II).txt_cond_ratio(I_start), 'ok', 'Markerfacecolor', 'k','MarkerSize',10);
-
+    
     
     I_start = find(calibration_data(II).txt_samp_nbr==1001 & calibration_data(II).txt_qc==2);
     plot (calibration_data(II).txt_station_id( I_start), 100*calibration_data(II).txt_cond_ratio(I_start), 'vr', 'Markerfacecolor', 'r','MarkerSize',10)
-
+    
     
     I_start = find(calibration_data(II).txt_samp_nbr==1001 & calibration_data(II).txt_qc==4);
     plot (calibration_data(II).txt_station_id( I_start), 100*calibration_data(II).txt_cond_ratio(I_start), 'vy', 'Markerfacecolor', 'y','MarkerSize',10)
-
+    
     
     %
     % plot these dgood values again so that their symbols appear on the top

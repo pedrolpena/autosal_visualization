@@ -1,7 +1,9 @@
 #=====================================================================
-#IAPSO STANDARD SEAWATER 
-#Insert the standard seawater values seperated by a comma "Batch,K15"
-#Example: 130,.99997
+# IAPSO STANDARD SEAWATER 
+# Insert the standard seawater values seperated by a comma "Batch,K15"
+# Example: 130,.99997
+# Don't place comments after the line containgin the vaules,
+# place comments before or after the data to be read in.
 #=====================================================================
 130,0.99997
 131,0.99986
